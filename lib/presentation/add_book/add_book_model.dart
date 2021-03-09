@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/domain/book.dart';
 
 class AddBookModel extends ChangeNotifier {
   String bookTitle = '';
@@ -12,5 +13,16 @@ class AddBookModel extends ChangeNotifier {
     Firestore.instance.collection('books').add({
       'title': bookTitle,
     });
+  }
+
+  Future updateBook(Book book) async {
+    final document =
+        Firestore.instance.collection('books').document(book.documentID);
+    await document.updateData(
+      {
+        'title': bookTitle,
+        'updateAt': Timestamp.now(),
+      },
+    );
   }
 }
